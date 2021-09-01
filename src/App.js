@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import { motion } from 'framer-motion';
 import './App.css';
-
+import { useState, useEffect } from "react"
+import { useQuery,QueryClient,QueryClientProvider } from "react-query"
+import Star from './Star';
+import Peoples from './peoples';
+import Header from './Header';
+const queryClient = new QueryClient();
 function App() {
+   let [hide,setHide]=useState("people")
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <QueryClientProvider client={queryClient}>
+      <Header />
+      <div className="actions">
+        {hide !=="people" && <motion.button
+          whileHover={{ scale: 1.1, background: "red", color: "white" }}
+          whileTap={{ scale: 1 }}
+          transition={{ duration: .4 }}
+          
+          onClick={() => setHide("people")}>people</motion.button>}
+        {hide !== "planet" && <motion.button
+          whileHover={{ scale: 1.1, background: "red", color: "white" }}
+          whileTap={{ scale: 1 }}
+          transition={{ duration: .4 }}
+          
+          onClick={() => setHide("planet")}>planet</motion.button>}
+     
+      </div>
+        
+      {hide === "people" && <Peoples />}
+      {hide==="planet" && <Star />}
+  
+    </QueryClientProvider>
+    
+  )
+  }
 
 export default App;
